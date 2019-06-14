@@ -1,0 +1,28 @@
+---
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Build
+  image: plugins/docker
+  settings:
+    repo: poksiala/caddy
+    dry_run: true
+
+- name: Publish
+  image: plugins/docker
+  settings:
+    username: poksiala
+    password:
+      from_secret: docker_password
+    repo: poksiala/caddy
+    tags: latest
+  when:
+    branch:
+    - master
+    event:
+    - push
