@@ -7,7 +7,13 @@ platform:
   arch: arm64
 
 steps:
-- name: docker
+- name: Build
+  image: plugins/docker
+  settings:
+    repo: poksiala/caddy
+    dry_run: true
+
+- name: Publish
   image: plugins/docker
   settings:
     username: poksiala
@@ -15,3 +21,8 @@ steps:
       from_secret: docker_password
     repo: poksiala/caddy
     tags: latest
+  when:
+    branch:
+    - master
+    event:
+    - push
